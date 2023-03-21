@@ -4,6 +4,13 @@
 
 int extraMemoryAllocated;
 
+void swap(int *a, int *b)
+{
+	int temp=*a
+	*a=*b;
+	*b=temp;
+}
+
 // implement merge sort
 // extraMemoryAllocated counts bytes of extra memory allocated
 void mergeSort(int pData[], int l, int r)
@@ -15,21 +22,52 @@ void mergeSort(int pData[], int l, int r)
 // extraMemoryAllocated counts bytes of memory allocated
 void insertionSort(int* pData, int n)
 {
-	
+	for(int i=1;i<n;i++)
+	{
+		int x=pData[i];
+		for(int j=i-1;j>=0;j--)
+		{
+			if(pData[j]>x)
+			{
+				swap(&x,&pData[j])
+			}
+		}
+	}
 }
 
 // implement bubble sort
 // extraMemoryAllocated counts bytes of extra memory allocated
 void bubbleSort(int* pData, int n)
 {
-	
+	for(int i=0;i<n-1;i++)
+	{
+		for(int j=i;j<n-i-1;j++)
+		{
+			if(pData[j]>=pData[j+1])
+			{
+				swap(&pData[j],&pData[j+1]);
+			}
+		}
+	}
 }
 
 // implement selection sort
 // extraMemoryAllocated counts bytes of extra memory allocated
 void selectionSort(int* pData, int n)
 {
-	
+	int minidx;
+	for(int i=0;i<n-1;i++)
+	{
+		minidx=i;
+		for(int j=i+1;j<n;j++)
+		{
+			if(arr[j]<arr[minidx])
+			{
+				minidx=j;
+			}
+		}
+		swap(&pData[i],&pData[minidx]);
+	}
 }
 
 // parses input file to an integer array
