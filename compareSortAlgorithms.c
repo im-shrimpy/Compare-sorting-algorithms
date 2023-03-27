@@ -4,34 +4,78 @@
 
 int extraMemoryAllocated;
 
-void swap(int *a, int *b)
-{
-	int temp=*a
-	*a=*b;
-	*b=temp;
-}
+
 
 // implement merge sort
 // extraMemoryAllocated counts bytes of extra memory allocated
-void mergeSort(int pData[], int l, int r)
-{
-	
+void mergeList(int pData[], int l, int m, int r) {
+    int i,j,k;
+    int n1=m-l+1;
+    int n2=r-m;
+
+    int L[n1], R[n2];
+
+    for (i=0;i<n1;i++)
+        L[i]=pData[l+i];
+    for (j=0;j<n2;j++)
+        R[j]=pData[m+1+j];
+
+    i=0;
+    j=0;
+    k=l;
+    while (i<n1 && j<n2){
+        if (L[i]<=R[j]) {
+            pData[k] = L[i];
+            i++;
+        }
+        else{
+            pData[k]=R[j];
+            j++;
+        }
+        k++;
+    }
+    while(i<n1){
+        pData[k] = L[i];
+        i++;
+        k++;
+    }
+    while(j<n2){
+        pData[k] = R[j];
+        j++;
+        k++;
+    }
 }
+
+void mergeSort(int pData[], int l, int r){
+    if (l<r){
+        int m=l+(r-l)/2;
+        mergeSort(pData,l,m);
+        mergeSort(pData,m+1,r);
+        mergeList(pData,l,m,r);
+    }
+}
+
 
 // implement insertion sort
 // extraMemoryAllocated counts bytes of memory allocated
 void insertionSort(int* pData, int n)
 {
-	for(int i=1;i<n;i++)
+	int j,i,x;
+	for(i=1;i<n;i++)
 	{
-		int x=pData[i];
-		for(int j=i-1;j>=0;j--)
+		x=pData[i];
+		for(j=i-1;j>=0;j--)
 		{
 			if(pData[j]>x)
 			{
-				swap(&x,&pData[j])
+				pData[j+1]=pData[j];
+			}
+			else
+			{
+				break;
 			}
 		}
+		pData[j+1]=x;
 	}
 }
 
@@ -41,11 +85,13 @@ void bubbleSort(int* pData, int n)
 {
 	for(int i=0;i<n-1;i++)
 	{
-		for(int j=i;j<n-i-1;j++)
+		for(int j=i;j<n-1;j++)
 		{
 			if(pData[j]>=pData[j+1])
 			{
-				swap(&pData[j],&pData[j+1]);
+				int temp=pData[j+1];
+				pData[j+1]=pData[j];
+				pData[j]=temp;
 			}
 		}
 	}
@@ -61,12 +107,14 @@ void selectionSort(int* pData, int n)
 		minidx=i;
 		for(int j=i+1;j<n;j++)
 		{
-			if(arr[j]<arr[minidx])
+			if(pData[j]<pData[minidx])
 			{
 				minidx=j;
 			}
 		}
-		swap(&pData[i],&pData[minidx]);
+		int temp = pData[minidx];
+        pData[minidx] = pData[i];
+        pData[i] = temp;
 	}
 }
 
