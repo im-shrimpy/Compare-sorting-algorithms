@@ -3,49 +3,63 @@
 #include <stdio.h>
 #include <string.h>
 
-int extraMemoryAllocated;
+int extraMemoryAllocated=0;
 
 
 
 // implement merge sort
 // extraMemoryAllocated counts bytes of extra memory allocated
-void mergeList(int pData[], int l, int m, int r) {
-    int i,j,k;
+void mergeList(int *pData, int l, int m, int r) {
+    int i, j, k;
     int n1=m-l+1;
     int n2=r-m;
 
-    int L[n1], R[n2];
+    int *L=malloc(n1*sizeof(int));
+    if (L!=NULL) {
+        extraMemoryAllocated+=n1*sizeof(int);
+    }
+    int *R=(int*)malloc(n2*sizeof(int));
+    if (R!= NULL){
+        extraMemoryAllocated += n2*sizeof(int);
+    }
 
-    for (i=0;i<n1;i++)
-        L[i]=pData[l+i];
-    for (j=0;j<n2;j++)
-        R[j]=pData[m+1+j];
-
-    i=0;
-    j=0;
-    k=l;
-    while (i<n1 && j<n2){
-        if (L[i]<=R[j]) {
+    for (i = 0; i < n1; i++)
+	{
+		L[i] = pData[l + i];
+	}
+    for (j = 0; j < n2; j++)
+	{
+        R[j] = pData[m + 1 + j];
+	}
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
             pData[k] = L[i];
             i++;
         }
-        else{
-            pData[k]=R[j];
+        else {
+            pData[k] = R[j];
             j++;
         }
         k++;
     }
-    while(i<n1){
+    while (i < n1) {
         pData[k] = L[i];
         i++;
         k++;
     }
-    while(j<n2){
+    while (j < n2) {
         pData[k] = R[j];
         j++;
         k++;
     }
+
+    free(L);
+    free(R);
 }
+
 
 void mergeSort(int pData[], int l, int r){
     if (l<r){
